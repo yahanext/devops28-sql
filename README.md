@@ -264,6 +264,74 @@ Filter используемый фильтр
 Восстановите БД test_db в новом контейнере.
 
 Приведите список операций, который вы применяли для бэкапа данных и восстановления. 
+```
+root@b55e150f28ad:/# pg_dumpall -h localhost -U post > /data/backup/postgres/back_dbroot@b55e150f28ad:/# ls /data/backup/postgres
+back_db
+yaha@yahawork:~/dock$ docker-compose stop
+Stopping psql ... done
+yaha@yahawork:~/dock$ docker rm psql
+psql
+yaha@yahawork:~/dock$ docker ps
+CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+yaha@yahawork:~/dock$ 
+yaha@yahawork:~/dock$ mkdir data2
+yaha@yahawork:~/dock$ 
+изменяем файл докер композе - ./data2:/var/lib/postgresql/data
+yaha@yahawork:~/dock$ docker-compose up -d
+Creating psql ... done
+yaha@yahawork:~/dock$ 
+yaha@yahawork:~/dock$ docker exec -it psql bash
+root@f148733f741c:/# 
+root@f148733f741c:/# export PGPASSWORD=post && psql -h localhost -U post
+psql (12.15 (Debian 12.15-1.pgdg110+1))
+Type "help" for help.
+
+post=# \l+
+                                                               List of databases
+   Name    | Owner | Encoding |  Collate   |   Ctype    | Access privileges |  Size   | Tablespace |                Description                 
+-----------+-------+----------+------------+------------+-------------------+---------+------------+--------------------------------------------
+ post      | post  | UTF8     | en_US.utf8 | en_US.utf8 |                   | 7969 kB | pg_default | 
+ postgres  | post  | UTF8     | en_US.utf8 | en_US.utf8 |                   | 7969 kB | pg_default | default administrative connection database
+ template0 | post  | UTF8     | en_US.utf8 | en_US.utf8 | =c/post          +| 7825 kB | pg_default | unmodifiable empty database
+           |       |          |            |            | post=CTc/post     |         |            | 
+ template1 | post  | UTF8     | en_US.utf8 | en_US.utf8 | =c/post          +| 7825 kB | pg_default | default template for new databases
+           |       |          |            |            | post=CTc/post     |         |            | 
+(4 rows)
+
+post=# 
+
+root@f148733f741c:/# ls /data/backup/postgres
+back_db
+root@f148733f741c:/# 
+export PGPASSWORD=post && psql -h localhost -U post -f /data/backup/postgres/back_db
+
+root@f148733f741c:/# export PGPASSWORD=post && psql -h localhost -U post
+psql (12.15 (Debian 12.15-1.pgdg110+1))
+Type "help" for help.
+
+post=# \l+
+                                                                   List of databases
+   Name    | Owner | Encoding |  Collate   |   Ctype    |     Access privileges     |  Size   | Tablespace |                Description              
+   
+-----------+-------+----------+------------+------------+---------------------------+---------+------------+-----------------------------------------
+---
+ post      | post  | UTF8     | en_US.utf8 | en_US.utf8 |                           | 8161 kB | pg_default | 
+ postgres  | post  | UTF8     | en_US.utf8 | en_US.utf8 |                           | 7969 kB | pg_default | default administrative connection databa
+se
+ template0 | post  | UTF8     | en_US.utf8 | en_US.utf8 | =c/post                  +| 7825 kB | pg_default | unmodifiable empty database
+           |       |          |            |            | post=CTc/post             |         |            | 
+ template1 | post  | UTF8     | en_US.utf8 | en_US.utf8 | =c/post                  +| 7969 kB | pg_default | default template for new databases
+           |       |          |            |            | post=CTc/post             |         |            | 
+ test_db   | post  | UTF8     | en_US.utf8 | en_US.utf8 | =Tc/post                 +| 7969 kB | pg_default | 
+           |       |          |            |            | post=CTc/post            +|         |            | 
+           |       |          |            |            | "test-simple-user"=c/post |         |            | 
+(5 rows)
+
+post=# 
+```
+
+
+
 
 ---
 
