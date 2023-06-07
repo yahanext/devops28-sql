@@ -196,7 +196,7 @@ post=# SELECT * FROM clients;
   4 | Ронни Джеймс Дио     | Russia            |      
   5 | Ritchie Blackmore    | Russia            |      
 (5 rows)
-
+```
 
 ## Задача 4
 
